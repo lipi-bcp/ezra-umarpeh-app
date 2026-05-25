@@ -1,12 +1,23 @@
 /**
  * Ezra Umarpeh Volunteer Resource Hub — Home
- * Editorial hero, pack overview, Booklet 4 spotlight, source-note panel.
- * Status: Only Booklet 4 is approved. All other items show Coming soon.
+ * Pack v1.0 — all booklets and loose-leaf items live.
+ * Editorial hero, pack status, booklet grid, loose-leaf grid, source approach.
  */
 import { Link } from "wouter";
-import { ArrowUpRight, Search, BookOpen, ClipboardList, ShieldCheck, Flame, FileText, Sparkles } from "lucide-react";
+import {
+  ArrowUpRight,
+  Search,
+  BookOpen,
+  ClipboardList,
+  ShieldCheck,
+  Flame,
+  FileText,
+  Sparkles,
+  HeartHandshake,
+  GraduationCap,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BOOKLETS, LOOSE_LEAF, PackItem } from "@/content/pack";
+import { BOOKLETS, LOOSE_LEAF, PackItem, itemPath, PACK_VERSION } from "@/content/pack";
 import { cn } from "@/lib/utils";
 
 const HERO_IMAGE = "/manus-storage/ezra-hero_28ff3f37.jpg";
@@ -18,30 +29,48 @@ type Props = {
 };
 
 export default function Home({ onOpenSearch }: Props) {
-  const approved = BOOKLETS.find((b) => b.status === "approved-sample")!;
-
   return (
     <div>
       <Hero onOpenSearch={onOpenSearch} />
 
       <Section
         kicker="Pack status"
-        title="One approved sample. The rest is in production."
-        intro="The Booklet 4 sample has been redesigned around Ezra Umarpeh’s brand and editorial voice. The remaining six booklets and five loose-leaf items have not yet been produced from the source manual, so they appear here as Coming soon — never as fabricated content."
+        title="The full volunteer pack is now live."
+        intro="All seven booklets and five loose-leaf items have been produced from the Ezra Umarpeh Volunteer Academy Manual, set on the approved Booklet 4 design system and ready for the verification list before print."
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatusStat label="Booklets approved" value="1 of 7" />
-          <StatusStat label="Loose-leaf items approved" value="0 of 5" />
-          <StatusStat label="Pack version" value="v1.0 · May 2026" />
+          <StatusStat label="Booklets" value={`${BOOKLETS.length} of ${BOOKLETS.length}`} />
+          <StatusStat label="Loose-leaf items" value={`${LOOSE_LEAF.length} of ${LOOSE_LEAF.length}`} />
+          <StatusStat label="Pack version" value={PACK_VERSION} />
+        </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/pack-contents"
+            className="inline-flex items-center gap-2 h-10 px-4 rounded-md border border-border bg-card hover:border-primary/40 text-sm transition-colors"
+          >
+            View pack contents <ArrowUpRight className="w-4 h-4" />
+          </Link>
+          <Link
+            href="/verification-list"
+            className="inline-flex items-center gap-2 h-10 px-4 rounded-md border border-border bg-card hover:border-primary/40 text-sm transition-colors"
+          >
+            Verification list <ShieldCheck className="w-4 h-4" />
+          </Link>
+          <Link
+            href="/design-system"
+            className="inline-flex items-center gap-2 h-10 px-4 rounded-md border border-border bg-card hover:border-primary/40 text-sm transition-colors"
+          >
+            Design system <Sparkles className="w-4 h-4" />
+          </Link>
         </div>
       </Section>
 
-      <BookletSpotlight booklet={approved} />
+      <BookletSpotlight />
 
       <Section
         kicker="Booklets"
-        title="The seven-booklet pack"
-        intro="Each booklet is designed for A5 saddle-stitch print and as a hyperlinked digital PDF, with a distinct accent so volunteers and coordinators can identify them at a glance."
+        title="Seven booklets, one continuous design system"
+        intro="Each booklet is A5 saddle-stitch, with its own accent colour and audience. Together they form a complete onboarding journey for new volunteers and a working reference for active ones."
       >
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {BOOKLETS.map((b, i) => (
@@ -56,8 +85,8 @@ export default function Home({ onOpenSearch }: Props) {
         intro="Designed to match the pack. The room inspection sheet and stock checklist are intended to be laminated and reused; the QR card is wallet-sized."
       >
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {LOOSE_LEAF.map((l, i) => (
-            <LooseLeafCard key={l.slug} item={l} index={i} />
+          {LOOSE_LEAF.map((l) => (
+            <LooseLeafCard key={l.slug} item={l} />
           ))}
         </div>
       </Section>
@@ -78,7 +107,7 @@ function Hero({ onOpenSearch }: { onOpenSearch: () => void }) {
             </span>
             <span className="h-px w-12 bg-primary/40" />
             <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              Internal preview · v1.0
+              {PACK_VERSION}
             </span>
           </div>
 
@@ -88,9 +117,9 @@ function Hero({ onOpenSearch }: { onOpenSearch: () => void }) {
               <span className="block text-primary">written down where it’s needed.</span>
             </h1>
             <p className="mt-5 text-base sm:text-[17px] leading-relaxed text-muted-foreground">
-              A searchable, shareable home for Ezra Umarpeh’s seven-booklet volunteer pack and
-              loose-leaf items. Built on the source manual; redesigned for the field, the hub and
-              the hospital room.
+              A searchable, shareable home for Ezra Umarpeh’s complete volunteer pack — seven A5
+              booklets and five loose-leaf items, rebuilt from the source manual for the field, the
+              hub and the hospital room.
             </p>
           </div>
 
@@ -105,10 +134,10 @@ function Hero({ onOpenSearch }: { onOpenSearch: () => void }) {
               </kbd>
             </Button>
             <Link
-              href="/booklets/04-shabbos-yom-tov"
+              href="/pack-contents"
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border bg-background hover:border-primary/50 transition-colors text-sm"
             >
-              Read the approved sample
+              Browse pack contents
               <ArrowUpRight className="w-4 h-4" />
             </Link>
           </div>
@@ -136,33 +165,34 @@ function StatusStat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function BookletSpotlight({ booklet }: { booklet: PackItem }) {
+function BookletSpotlight() {
+  const featured = BOOKLETS.find((b) => b.slug === "04-shabbos-yom-tov") ?? BOOKLETS[0];
   return (
     <section className="mt-16 lg:mt-20">
       <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-8 lg:gap-12 items-stretch">
         <div className="order-2 lg:order-1 flex flex-col justify-center">
           <span className="text-[10px] uppercase tracking-[0.22em] text-primary font-medium">
-            Approved sample
+            Reference sample
           </span>
           <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-tight">
             Booklet 04 — Shabbos & Yom Tov Preparation Guide
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed">
-            The first booklet redesigned and approved as a sample. It demonstrates the cover system,
-            procedure numbering, checklist style, callouts and the warm, values-led voice that the
-            rest of the pack will follow.
+            The booklet that set the design system for the rest of the pack. It demonstrates the
+            cover treatment, procedure numbering, checklist style, callouts and the warm,
+            values-led voice carried through every other booklet.
           </p>
 
           <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
-            <Meta label="Audience" value={booklet.audience} />
-            <Meta label="Pages" value={booklet.pages} />
-            <Meta label="Version" value="v1.0 · May 2026" />
-            <Meta label="Status" value="Approved sample" tone="approved" />
+            <Meta label="Audience" value={featured.audience} />
+            <Meta label="Pages" value={featured.pages} />
+            <Meta label="Version" value={PACK_VERSION} />
+            <Meta label="Status" value="Live" tone="approved" />
           </dl>
 
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
-              href={`/booklets/${booklet.slug}`}
+              href={itemPath(featured)}
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm"
             >
               Open Booklet 4
@@ -172,7 +202,7 @@ function BookletSpotlight({ booklet }: { booklet: PackItem }) {
               href="/about"
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border hover:border-primary/50 transition-colors text-sm"
             >
-              Why a sample first
+              How the hub is built
             </Link>
           </div>
         </div>
@@ -233,44 +263,40 @@ function Section({
   );
 }
 
-const BOOKLET_ICONS = [Sparkles, ShieldCheck, ClipboardList, Flame, FileText, BookOpen, ShieldCheck];
+const BOOKLET_ICONS = [
+  HeartHandshake,
+  BookOpen,
+  ClipboardList,
+  Flame,
+  FileText,
+  GraduationCap,
+  ShieldCheck,
+];
 
 function BookletCard({ item, index }: { item: PackItem; index: number }) {
   const Icon = BOOKLET_ICONS[index % BOOKLET_ICONS.length];
-  const approved = item.status === "approved-sample";
-
   return (
     <Link
-      href={`/booklets/${item.slug}`}
+      href={itemPath(item)}
       className={cn(
-        "group relative flex flex-col h-full p-5 rounded-xl border bg-card transition-all overflow-hidden",
-        approved
-          ? "border-primary/30 hover:border-primary/60 shadow-[0_1px_0_oklch(0.68_0.158_122.5/0.15)]"
-          : "border-border hover:border-primary/40",
+        "group relative flex flex-col h-full p-5 rounded-xl border border-border bg-card transition-all hover:border-primary/40 hover:-translate-y-0.5 overflow-hidden",
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div
-            className={cn(
-              "w-9 h-9 rounded-md flex items-center justify-center",
-              approved
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground",
-            )}
-          >
-            <Icon className="w-4 h-4" />
+      <div className="flex items-start gap-3">
+        <div
+          className="w-9 h-9 rounded-md flex items-center justify-center text-white"
+          style={{ background: item.accent }}
+        >
+          <Icon className="w-4 h-4" />
+        </div>
+        <div className="min-w-0">
+          <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            Booklet {item.number}
           </div>
-          <div>
-            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              Booklet {item.number}
-            </div>
-            <div className="font-display text-lg tracking-tight leading-snug mt-0.5">
-              {item.title}
-            </div>
+          <div className="font-display text-lg tracking-tight leading-snug mt-0.5 truncate">
+            {item.title}
           </div>
         </div>
-        <StatusPill status={item.status} />
       </div>
 
       <p className="mt-4 text-sm text-muted-foreground leading-relaxed line-clamp-3">
@@ -278,55 +304,37 @@ function BookletCard({ item, index }: { item: PackItem; index: number }) {
       </p>
 
       <div className="mt-5 pt-4 border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground">
-        <span>{item.audience}</span>
-        <ArrowUpRight
-          className={cn(
-            "w-4 h-4 transition-transform",
-            "group-hover:translate-x-0.5 group-hover:-translate-y-0.5",
-            approved ? "text-primary" : "",
-          )}
-        />
+        <span>
+          {item.audience} · {item.pages}
+        </span>
+        <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-primary" />
       </div>
     </Link>
   );
 }
 
-function LooseLeafCard({ item, index }: { item: PackItem; index: number }) {
+function LooseLeafCard({ item }: { item: PackItem }) {
   return (
     <Link
-      href={`/loose-leaf/${item.slug}`}
-      className="group flex flex-col h-full p-5 rounded-xl border border-border bg-card hover:border-primary/40 transition-colors"
+      href={itemPath(item)}
+      className="group flex flex-col h-full p-5 rounded-xl border border-border bg-card hover:border-primary/40 hover:-translate-y-0.5 transition-all"
     >
       <div className="flex items-center justify-between">
         <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
           Loose-leaf · {item.number}
         </div>
-        <StatusPill status={item.status} />
+        <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-primary/15 text-primary font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+          Live
+        </span>
       </div>
       <div className="mt-3 font-display text-lg tracking-tight leading-snug">{item.title}</div>
       <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{item.summary}</p>
       <div className="mt-auto pt-4 text-xs text-muted-foreground border-t border-border/60 mt-5 flex items-center justify-between">
         <span>{item.pages}</span>
-        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-primary" />
       </div>
     </Link>
-  );
-}
-
-function StatusPill({ status }: { status: PackItem["status"] }) {
-  if (status === "approved-sample") {
-    return (
-      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-primary/15 text-primary font-medium">
-        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-        Approved sample
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-muted text-muted-foreground">
-      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60" />
-      Coming soon
-    </span>
   );
 }
 
@@ -355,16 +363,18 @@ function EditorialApproach() {
             format.
           </p>
           <p>
-            No new procedures have been invented. Where the source was not explicit — including the
-            Motzei Shabbos clear-up — the gap is flagged in the booklet rather than guessed.
+            No new procedures have been invented. Where the source was not explicit — including
+            the Motzei Shabbos clear-up — the gap is flagged in the booklet rather than guessed.
+            The full list of editorial decisions lives in the Editor’s Notes that ship with the
+            pack.
           </p>
         </div>
         <div className="mt-6">
           <Link
             href="/about"
-            className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+            className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border hover:border-primary/50 transition-colors text-sm"
           >
-            Read the cover note in full
+            Read about the hub
             <ArrowUpRight className="w-4 h-4" />
           </Link>
         </div>

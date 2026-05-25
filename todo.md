@@ -1,47 +1,14 @@
-# Ezra Umarpeh Volunteer Resource Hub — Build TODO
+# Resource Hub — v2 (full pack)
 
-Scope agreed with client: build a hub **shell** that fully shows the approved Booklet 4 sample, and clearly marks every other booklet and loose-leaf item as "Coming Soon — awaiting production". Do **not** invent content for unproduced items.
+The full Ezra Umarpeh Volunteer Pack is now produced. The hub moves from the shell concept to a populated reference site.
 
-## Design system and shell
-- [ ] Apply Ezra Umarpeh brand tokens (olive green, deep green, neutral grey, ivory) in `client/src/index.css`
-- [ ] Add Fraunces (display) + Inter Tight (UI) from Google Fonts in `client/index.html`
-- [ ] Build top header with logo, brand wordmark, search trigger, share/print
-- [ ] Build persistent sidebar with booklet index (1–7) + loose-leaf section + manual
-- [ ] Build footer with version line and "Internal volunteer reference" note
-
-## Home page
-- [ ] Editorial hero using `ezra-hero` image with overlay copy from cover note
-- [ ] Pack overview grid: 7 booklet cards + 5 loose-leaf cards, each with status badge
-- [ ] Only Booklet 4 shows status "Approved sample"; all others show "Coming soon — awaiting production"
-- [ ] Quick-search input that opens command palette
-- [ ] "What this hub is" explainer derived from the client cover note
-
-## Booklet 4 detail page
-- [ ] Status badge: "Approved sample", version, last updated, audience
-- [ ] Sticky on-this-page TOC
-- [ ] Sections: Shabbos & Yom Tov awareness, items checklist, Shabbos kettle, fridge/freezer Shabbos mode, hot warmer/lights/AC, Erev Shabbos checklist, Motzei Shabbos checklist
-- [ ] Tick-box checklists, numbered procedures restarting at 1, callout styles
-- [ ] Clear footnote flag on the Motzei Shabbos section (source limitation)
-- [ ] Save + share + print buttons (toast stubs where not implemented)
-- [ ] Download links to the Booklet 4 digital + print-ready PDFs
-
-## Coming-soon detail pages (one shared template)
-- [ ] Booklets 1, 2, 3, 5, 6, 7 and the 5 loose-leaf items all route to a shared "Coming soon" page
-- [ ] Page shows: booklet number, working title, audience, intended contents (from cover note), status, expected next step
-- [ ] No fabricated procedural content
-
-## Search + share
-- [ ] Cmd/Ctrl + K command palette: searches across Booklet 4 sections + booklet titles + loose-leaf titles
-- [ ] Web Share API where available, copy-link fallback, print stylesheet basics
-- [ ] Toast confirmations using sonner
-
-## Cover note / about
-- [ ] About page that renders the client cover note copy
-- [ ] Editorial approach explainer (preserved source content, not invented)
-- [ ] Client verification list reminder
-
-## QA + delivery
-- [ ] No invisible text, no orphan routes, all "Coming Soon" CTAs clearly disabled or labelled
-- [ ] Responsive on mobile (volunteers in the field)
-- [ ] Save checkpoint
-- [ ] Deliver site preview URL + summary to user
+- [ ] Re-read current site files: `content/pack.ts`, `App.tsx`, `Booklet4.tsx`, `ComingSoonItem.tsx`, `Home.tsx`, `About.tsx`, `SiteShell.tsx`, `CommandSearch.tsx`.
+- [ ] Rebuild `content/pack.ts` so every booklet (1–7) and every loose-leaf item (L1–L5) carries real section data and a populated search index.
+- [ ] Replace the bespoke Booklet4 page with a data-driven `BookletDetail.tsx` so all seven booklets render through one component.
+- [ ] Replace `ComingSoonItem.tsx` with `LooseleafDetail.tsx` for the five loose-leaf items.
+- [ ] Wire routes for `/booklet/:slug` and `/loose-leaf/:slug` in `App.tsx`; keep a permanent redirect from `/booklet/4` and from any old "Coming Soon" paths.
+- [ ] Update Home: remove Coming Soon treatment, show 7 booklets + 5 loose-leaf items as live, add a Pack-pages section.
+- [ ] Add `/pack/contents`, `/pack/design-system`, `/pack/verification` pages, fed from the pack meta content.
+- [ ] Expand CommandSearch index to cover every booklet section + every loose-leaf item.
+- [ ] Upload all booklet + loose-leaf + meta PDFs to webdev assets and wire Download PDF buttons.
+- [ ] QA: keyboard, focus rings, mobile, brand consistency. Checkpoint and deliver.

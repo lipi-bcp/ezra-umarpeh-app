@@ -13,101 +13,95 @@ export default function About() {
 
       <header className="mt-6 pb-6 border-b border-border">
         <span className="text-[10px] uppercase tracking-[0.22em] text-primary font-medium">
-          Cover note · For the client
+          About this hub · For Ezra Umarpeh
         </span>
         <h1 className="mt-3 font-display text-4xl tracking-tight leading-tight">
-          Booklet 4 — Shabbos & Yom Tov Preparation Guide
+          A searchable, shareable home for the volunteer pack
         </h1>
         <p className="mt-4 text-muted-foreground text-[15px] leading-relaxed">
-          This hub is a concept preview built on top of the approved Booklet 4 sample. Its purpose
-          is to demonstrate how the seven-booklet pack and loose-leaf items will work as a
-          searchable, shareable resource for volunteers and coordinators — before the rest of the
-          pack is produced.
+          The Volunteer Resource Hub is the digital companion to the printed Ezra Umarpeh
+          Volunteer Pack — seven A5 booklets and five loose-leaf items, all sourced from the
+          Volunteer Academy Manual and set in a single design system.
         </p>
       </header>
 
-      <Section title="What you’re looking at">
+      <Section title="What this hub is">
         <p>
-          Booklet 4 is presented here as a first, fully-designed sample of the pack. It’s a
-          deliberately compact piece — eight A5 pages, suitable for saddle-stitch printing — chosen
-          because it puts the system through its paces: procedures, checklists, callouts, a small
-          table, and the warm, values-led voice the source manual already has.
+          A single, searchable home for the whole pack. Volunteers and coordinators can find a
+          procedure quickly, share a deep link to a specific section, print a booklet on demand,
+          and download the print-ready PDF for the print shop. The pack is also fully usable on a
+          phone in a hospital corridor.
         </p>
         <p>
-          The aim is to agree the visual direction and editorial approach here, on a manageable
-          piece, before applying the same system to the rest of the seven-booklet pack and the
-          loose-leaf items.
-        </p>
-      </Section>
-
-      <Section title="How we arrived at this design">
-        <p>
-          The cover and section openers carry the Ezra Umarpeh wheelchair-and-heart mark, paired
-          with a calm, editorial typography system — a humanist sans for body text and a confident
-          serif display for headings — set on a warm ivory background.
-        </p>
-        <p>
-          We’ve borrowed the website’s colour cues without leaning on a corporate palette: an olive
-          green as the primary accent, deep green for emphasis, and quiet neutrals for the
-          operational content. The booklet feels like a community-rooted reference, not a corporate
-          brochure, and reads cleanly at A5.
-        </p>
-        <p>
-          Inside, the source manual is the source of truth. Where the original had broken bullet
-          lists, duplicated headings or continuous step numbering across unrelated procedures, we’ve
-          rebuilt every list as a proper list, restarted numbered steps at 1 within each procedure,
-          and standardised terminology (for example, “hospital room” as the primary term, with
-          “Shabbos room” used only where the room’s Shabbos function is specifically meant).
+          Every booklet on this site mirrors the printed A5 booklet. The on-this-page contents
+          stays sticky on desktop, callouts and checklists are styled the same as in print, and
+          each item has its own download for the print-ready PDF.
         </p>
       </Section>
 
-      <Section title="One thing to flag in this sample">
+      <Section title="How we built it">
         <p>
-          The source manual does not contain a dedicated Motzei Shabbos section. The Motzei Shabbos
-          clear-up checklist in Booklet 4 has been assembled only from related appliance,
-          cleanliness, stock-management and reporting procedures already present in the manual, and
-          it is clearly marked as such in the booklet. We recommend that Ezra Umarpeh review this
-          page specifically and confirm whether additional steps should be added before final
-          print.
+          The Ezra Umarpeh wheelchair-and-heart mark anchors the brand. Headings are set in
+          Fraunces, an editorial serif with a calm, dignified tone. Body copy is set in Inter
+          Tight for clarity at small sizes. The background is a warm ivory, with an olive-green
+          accent drawn from the logo.
+        </p>
+        <p>
+          Each booklet has its own accent colour — sage, forest, slate, Ezra olive, amber, plum
+          and crimson — so volunteers can identify booklets at a glance both in print and on the
+          shelf.
+        </p>
+        <p>
+          The source manual is the source of truth. We have rebuilt broken lists into proper
+          lists, restarted numbered steps at 1 within each procedure, standardised terminology
+          (for example, “hospital room” as the primary term), and reorganised material so each
+          booklet stands on its own.
         </p>
       </Section>
 
-      <Section title="What we’d like from you">
+      <Section title="Editorial gaps we have flagged">
         <p>
-          A review of Booklet 4 as a printable A5 booklet: the visual direction, the editorial
-          voice, the depth and ordering of the content, and the flagged Motzei Shabbos section.
+          We have not invented procedures. Where the source manual was not explicit, the gap is
+          flagged in the booklet rather than guessed — most notably the Motzei Shabbos clear-up
+          checklist in Booklet 4, which is assembled only from related appliance, cleanliness,
+          stock-management and reporting procedures already in the manual.
         </p>
         <p>
-          Once it’s approved, we will produce the remaining six booklets — About Ezra Umarpeh, the
-          Volunteer Handbook, Hospital Room Operations, Reporting & Incidents, the Trainer’s Pack,
-          and Health, Safety & Safeguarding — plus the five loose-leaf items, using the same system
-          and editorial rules.
+          The full list of editorial decisions lives in the Editor’s Notes that ship with the
+          pack. The Client Verification List details every operational item that needs Ezra
+          Umarpeh sign-off before print — the named safeguarding lead, the live QR systems,
+          approved cleaning products, the office phone number, and so on.
         </p>
+      </Section>
+
+      <Section title="What to do next">
         <p>
-          A short Client Verification List will accompany the final pack, listing items we
-          recommend you double-check before printing — accommodation arrangements, phone numbers,
-          form URLs, named role titles, and anything else that may have changed.
+          Use the verification list to confirm operational details, then approve the pack for
+          print. The hub will remain in sync with the printed pack and can be extended over time
+          with additional sections, translations, or volunteer-specific views.
         </p>
       </Section>
 
       <div className="mt-12 grid sm:grid-cols-2 gap-3">
         <Link
-          href="/booklets/04-shabbos-yom-tov"
+          href="/pack-contents"
           className="group p-5 rounded-md border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors flex items-center justify-between"
         >
           <div>
-            <div className="text-[10px] uppercase tracking-[0.16em] text-primary">Approved sample</div>
-            <div className="font-display text-lg mt-1">Read Booklet 04</div>
+            <div className="text-[10px] uppercase tracking-[0.16em] text-primary">Pack contents</div>
+            <div className="font-display text-lg mt-1">See every booklet</div>
           </div>
           <ArrowRight className="w-5 h-5 text-primary group-hover:translate-x-0.5 transition-transform" />
         </Link>
         <Link
-          href="/"
+          href="/verification-list"
           className="group p-5 rounded-md border border-border bg-card hover:border-primary/40 transition-colors flex items-center justify-between"
         >
           <div>
-            <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Overview</div>
-            <div className="font-display text-lg mt-1">See the pack</div>
+            <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+              Before print
+            </div>
+            <div className="font-display text-lg mt-1">Client verification list</div>
           </div>
           <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
         </Link>

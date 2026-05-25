@@ -7,8 +7,10 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Booklet4 from "./pages/Booklet4";
-import ComingSoonItem from "./pages/ComingSoonItem";
+import PackItemPage from "./pages/PackItemPage";
+import PackContentsPage from "./pages/PackContentsPage";
+import DesignSystemPage from "./pages/DesignSystemPage";
+import VerificationListPage from "./pages/VerificationListPage";
 import SiteShell from "./components/SiteShell";
 import CommandSearch from "./components/CommandSearch";
 
@@ -24,9 +26,11 @@ function App() {
             <Switch>
               <Route path="/" component={() => <Home onOpenSearch={() => setSearchOpen(true)} />} />
               <Route path="/about" component={About} />
-              <Route path="/booklets/04-shabbos-yom-tov" component={Booklet4} />
-              <Route path="/booklets/:slug" component={ComingSoonItem} />
-              <Route path="/loose-leaf/:slug" component={ComingSoonItem} />
+              <Route path="/pack-contents" component={PackContentsPage} />
+              <Route path="/design-system" component={DesignSystemPage} />
+              <Route path="/verification-list" component={VerificationListPage} />
+              <Route path="/booklets/:slug" component={PackItemPage} />
+              <Route path="/loose-leaf/:slug" component={PackItemPage} />
               <Route path="/404" component={NotFound} />
               <Route component={NotFound} />
             </Switch>

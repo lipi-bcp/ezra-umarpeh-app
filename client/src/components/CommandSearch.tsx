@@ -9,7 +9,8 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { buildSearchIndex } from "@/content/pack";
+import { BookOpen, FileText, BookText } from "lucide-react";
+import { ALL_ITEMS, buildSearchIndex, getItemBySlug, itemPath } from "@/content/pack";
 
 type Props = {
   open: boolean;
@@ -32,34 +33,120 @@ export default function CommandSearch({ open, onOpenChange }: Props) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [open, onOpenChange]);
 
-  const bookletSections = records.filter((r) => r.id.startsWith("04#"));
-  const items = records.filter((r) => !r.id.startsWith("04#"));
+  // Split records into top-level items vs section hits
+  const topLevel = records.filter((r) => !r.sectionId);
+  const sectionHits = records.filter((r) => !!r.sectionId);
+
+  const goItem = (slug: string, sectionId?: string) => {
+    const item = getItemBySlug(slug);
+    if (!item) return;
+    const path = itemPath(item) + (sectionId ? `#${sectionId}` : "");
+    setLocation(path);
+    onOpenChange(false);
+  };
 
   return (
     <CommandDialog open={open} onOpenChange={onOpenChange}>
       <CommandInput
-        placeholder="Search Booklet 4 sections, booklets and loose-leaf items…"
+        placeholder="Search the whole pack — booklets, loose-leaf, sections…"
         value={query}
         onValueChange={setQuery}
       />
       <CommandList>
-        <CommandEmpty>No matches in the current pack preview.</CommandEmpty>
+        <CommandEmpty>No matches in the pack.</CommandEmpty>
 
-        <CommandGroup heading="Booklet 4 — Shabbos & Yom Tov (approved sample)">
-          {bookletSections.map((r) => (
+        <CommandGroup heading="Jump to">
+          <CommandItem
+            value="pack contents overview"
+            onSelect={() => {
+              setLocation("/pack-contents");
+              onOpenChange(false);
+            }}
+          >
+            <BookText className="w-4 h-4 text-primary" /> Pack contents
+          </CommandItem>
+          <CommandItem
+            value="design system"
+            onSelect={() => {
+              setLocation("/design-system");
+              onOpenChange(false);
+            }}
+          >
+            <BookText className="w-4 h-4 text-primary" /> Design system
+          </CommandItem>
+          <CommandItem
+            value="client verification list"
+            onSelect={() => {
+              setLocation("/verification-list");
+              onOpenChange(false);
+            }}
+          >
+            <BookText className="w-4 h-4 text-primary" /> Client verification list
+          </CommandItem>
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Booklets">
+          {topLevel
+            .filter((r) => r.itemGroup === "booklet")
+            .map((r) => (
+              <CommandItem
+                key={r.id}
+                value={`${r.title} ${r.excerpt}`}
+                onSelect={() => goItem(r.itemSlug)}
+                className="flex flex-col items-start gap-1 py-3"
+              >
+                <div className="flex items-center gap-2 w-full">
+                  <BookOpen className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium">{r.title}</span>
+                  <span className="ml-auto text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/15 text-primary">
+                    Live
+                  </span>
+                </div>
+                <div className="text-xs text-muted-foreground line-clamp-2 pl-6">{r.excerpt}</div>
+              </CommandItem>
+            ))}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Loose-leaf">
+          {topLevel
+            .filter((r) => r.itemGroup === "loose-leaf")
+            .map((r) => (
+              <CommandItem
+                key={r.id}
+                value={`${r.title} ${r.excerpt}`}
+                onSelect={() => goItem(r.itemSlug)}
+                className="flex flex-col items-start gap-1 py-3"
+              >
+                <div className="flex items-center gap-2 w-full">
+                  <FileText className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium">{r.title}</span>
+                  <span className="ml-auto text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/15 text-primary">
+                    Live
+                  </span>
+                </div>
+                <div className="text-xs text-muted-foreground line-clamp-2 pl-6">{r.excerpt}</div>
+              </CommandItem>
+            ))}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Sections">
+          {sectionHits.map((r) => (
             <CommandItem
               key={r.id}
-              value={`${r.title} ${r.excerpt}`}
-              onSelect={() => {
-                setLocation(`/booklets/04-shabbos-yom-tov#${r.sectionId}`);
-                onOpenChange(false);
-              }}
+              value={`${r.title} ${r.itemTitle} ${r.excerpt}`}
+              onSelect={() => goItem(r.itemSlug, r.sectionId)}
               className="flex flex-col items-start gap-1 py-3"
             >
               <div className="flex items-center gap-2 w-full">
-                <span className="text-sm font-medium">{r.title}</span>
-                <span className="ml-auto text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/15 text-primary">
-                  Approved
+                <span className="text-sm">{r.title}</span>
+                <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {r.itemGroup === "booklet" ? "Booklet" : "Loose-leaf"} {r.itemNumber}
                 </span>
               </div>
               <div className="text-xs text-muted-foreground line-clamp-2">{r.excerpt}</div>
@@ -68,36 +155,9 @@ export default function CommandSearch({ open, onOpenChange }: Props) {
         </CommandGroup>
 
         <CommandSeparator />
-
-        <CommandGroup heading="Pack contents">
-          {items.map((r) => (
-            <CommandItem
-              key={r.id}
-              value={`${r.title} ${r.excerpt}`}
-              onSelect={() => {
-                const isBooklet = !r.itemSlug.startsWith("loose-");
-                setLocation(`${isBooklet ? "/booklets" : "/loose-leaf"}/${r.itemSlug}`);
-                onOpenChange(false);
-              }}
-              className="flex flex-col items-start gap-1 py-3"
-            >
-              <div className="flex items-center gap-2 w-full">
-                <span className="text-sm">{r.title}</span>
-                <span
-                  className={
-                    "ml-auto text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded " +
-                    (r.status === "approved-sample"
-                      ? "bg-primary/15 text-primary"
-                      : "bg-muted text-muted-foreground")
-                  }
-                >
-                  {r.status === "approved-sample" ? "Approved" : "Coming soon"}
-                </span>
-              </div>
-              <div className="text-xs text-muted-foreground line-clamp-2">{r.excerpt}</div>
-            </CommandItem>
-          ))}
-        </CommandGroup>
+        <div className="px-3 py-2 text-[11px] text-muted-foreground">
+          {ALL_ITEMS.length} items · {records.length - ALL_ITEMS.length} sections indexed
+        </div>
       </CommandList>
     </CommandDialog>
   );

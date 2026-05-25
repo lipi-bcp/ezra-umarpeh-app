@@ -1,8 +1,20 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Printer, Share2, Menu, X, BookOpen, FileText, Sparkles } from "lucide-react";
+import {
+  Search,
+  Printer,
+  Share2,
+  Menu,
+  X,
+  BookOpen,
+  FileText,
+  Sparkles,
+  ListChecks,
+  Palette,
+  ShieldCheck,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BOOKLETS, LOOSE_LEAF } from "@/content/pack";
+import { BOOKLETS, LOOSE_LEAF, itemPath } from "@/content/pack";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -23,7 +35,11 @@ export default function SiteShell({ children, onOpenSearch }: Props) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader onOpenSearch={onOpenSearch} onToggleNav={() => setMobileOpen((v) => !v)} mobileOpen={mobileOpen} />
+      <SiteHeader
+        onOpenSearch={onOpenSearch}
+        onToggleNav={() => setMobileOpen((v) => !v)}
+        mobileOpen={mobileOpen}
+      />
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 lg:gap-12 pt-6 lg:pt-10">
         <aside
@@ -71,7 +87,7 @@ function SiteHeader({
               Volunteer Resource Hub
             </span>
             <span className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-              Ezra Umarpeh · Internal preview
+              Ezra Umarpeh · Pack v1.0
             </span>
           </span>
         </Link>
@@ -104,9 +120,7 @@ function SiteHeader({
           className="hidden md:inline-flex"
           onClick={() => {
             if (navigator.share) {
-              navigator
-                .share({ title: document.title, url: window.location.href })
-                .catch(() => {});
+              navigator.share({ title: document.title, url: window.location.href }).catch(() => {});
             } else {
               navigator.clipboard.writeText(window.location.href);
               toast.success("Link copied to clipboard");
@@ -139,6 +153,27 @@ function SidebarNav() {
           Home
         </SidebarLink>
         <SidebarLink
+          href="/pack-contents"
+          active={location === "/pack-contents"}
+          icon={<ListChecks className="w-3.5 h-3.5" />}
+        >
+          Pack contents
+        </SidebarLink>
+        <SidebarLink
+          href="/design-system"
+          active={location === "/design-system"}
+          icon={<Palette className="w-3.5 h-3.5" />}
+        >
+          Design system
+        </SidebarLink>
+        <SidebarLink
+          href="/verification-list"
+          active={location === "/verification-list"}
+          icon={<ShieldCheck className="w-3.5 h-3.5" />}
+        >
+          Verification list
+        </SidebarLink>
+        <SidebarLink
           href="/about"
           active={location === "/about"}
           icon={<FileText className="w-3.5 h-3.5" />}
@@ -150,14 +185,13 @@ function SidebarNav() {
       <SectionLabel>Booklets</SectionLabel>
       <ul className="mb-6">
         {BOOKLETS.map((b) => {
-          const href = `/booklets/${b.slug}`;
+          const href = itemPath(b);
           return (
             <SidebarLink
               key={b.slug}
               href={href}
               active={location === href}
               icon={<BookOpen className="w-3.5 h-3.5" />}
-              status={b.status === "approved-sample" ? "approved" : "soon"}
             >
               <span className="font-mono text-[10px] text-muted-foreground mr-2">{b.number}</span>
               {b.title}
@@ -169,14 +203,13 @@ function SidebarNav() {
       <SectionLabel>Loose-leaf</SectionLabel>
       <ul>
         {LOOSE_LEAF.map((l) => {
-          const href = `/loose-leaf/${l.slug}`;
+          const href = itemPath(l);
           return (
             <SidebarLink
               key={l.slug}
               href={href}
               active={location === href}
               icon={<FileText className="w-3.5 h-3.5" />}
-              status={"soon"}
             >
               <span className="font-mono text-[10px] text-muted-foreground mr-2">{l.number}</span>
               {l.title}
@@ -186,8 +219,8 @@ function SidebarNav() {
       </ul>
 
       <div className="mt-8 px-3 py-3 rounded-md border border-dashed border-border bg-card/70 text-[12px] text-muted-foreground leading-relaxed">
-        Internal preview. Only Booklet 4 is an approved sample. All other items are awaiting
-        production from the source manual and are shown as <span className="font-medium">Coming soon</span>.
+        Pack v1.0 — May 2026. All seven booklets and five loose-leaf items are produced from the
+        Volunteer Academy Manual. Use the verification list before print.
       </div>
     </nav>
   );
@@ -206,13 +239,11 @@ function SidebarLink({
   active,
   children,
   icon,
-  status,
 }: {
   href: string;
   active?: boolean;
   children: ReactNode;
   icon?: ReactNode;
-  status?: "approved" | "soon";
 }) {
   return (
     <li>
@@ -225,18 +256,10 @@ function SidebarLink({
             : "hover:bg-accent/60 text-foreground/85 hover:text-foreground",
         )}
       >
-        <span className="text-muted-foreground group-hover:text-primary transition-colors">{icon}</span>
+        <span className="text-muted-foreground group-hover:text-primary transition-colors">
+          {icon}
+        </span>
         <span className="flex-1 truncate">{children}</span>
-        {status === "approved" && (
-          <span className="ml-1 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/15 text-primary">
-            Approved
-          </span>
-        )}
-        {status === "soon" && (
-          <span className="ml-1 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
-            Soon
-          </span>
-        )}
       </Link>
     </li>
   );
@@ -247,19 +270,19 @@ function SiteFooter() {
     <footer className="border-t border-border mt-16">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10 grid sm:grid-cols-2 gap-6 text-sm text-muted-foreground">
         <div>
-          <div className="font-display text-foreground text-base">Ezra Umarpeh Volunteer Resource Hub</div>
+          <div className="font-display text-foreground text-base">
+            Ezra Umarpeh Volunteer Resource Hub
+          </div>
           <div className="mt-1">
-            Internal preview · Version 1.0 — May 2026 · For volunteer and coordinator use.
+            Pack v1.0 · May 2026 · For volunteer, trainer and coordinator use.
           </div>
         </div>
         <div className="sm:text-right">
           <div>
-            Source manual is the authoritative reference. Content shown here is an editorial rebuild for
-            review.
+            Source manual is the authoritative reference. Content shown here is an editorial rebuild
+            from the Volunteer Academy Manual.
           </div>
-          <div className="mt-1">
-            Built as a concept hub on top of the approved Booklet 4 sample.
-          </div>
+          <div className="mt-1">Seven booklets · five loose-leaf items · one verification list.</div>
         </div>
       </div>
     </footer>
