@@ -20,10 +20,6 @@ import { Button } from "@/components/ui/button";
 import { BOOKLETS, LOOSE_LEAF, PackItem, itemPath, PACK_VERSION } from "@/content/pack";
 import { cn } from "@/lib/utils";
 
-const HERO_IMAGE = "/manus-storage/ezra-hero_28ff3f37.jpg";
-const BOOKLET_COVER_IMAGE = "/manus-storage/ezra-booklet-cover_a2199c7f.jpg";
-const CARE_IMAGE = "/manus-storage/ezra-care_cacf5a57.jpg";
-
 type Props = {
   onOpenSearch: () => void;
 };
@@ -143,13 +139,16 @@ function Hero({ onOpenSearch }: { onOpenSearch: () => void }) {
           </div>
         </div>
 
-        <div className="relative min-h-[320px] lg:min-h-[480px]">
-          <img
-            src={HERO_IMAGE}
-            alt="A volunteer delivering an olive-green Shabbos tote bag to a hospital patient at dusk"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-background/10 to-background/40 lg:via-transparent" />
+        <div className="relative min-h-[320px] lg:min-h-[480px] bg-gradient-to-br from-primary/15 via-primary/5 to-primary/25 flex items-center justify-center overflow-hidden">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 200 200"
+            className="w-40 h-40 lg:w-56 lg:h-56 text-primary/70"
+            fill="currentColor"
+          >
+            <path d="M100 30c-22 0-40 18-40 40 0 30 40 70 40 70s40-40 40-70c0-22-18-40-40-40zm0 56a16 16 0 1 1 0-32 16 16 0 0 1 0 32z" />
+          </svg>
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-background/5 to-background/30 lg:via-transparent" />
         </div>
       </div>
     </section>
@@ -207,12 +206,22 @@ function BookletSpotlight() {
           </div>
         </div>
 
-        <div className="order-1 lg:order-2 relative rounded-xl overflow-hidden border border-border bg-card min-h-[280px] lg:min-h-[420px]">
-          <img
-            src={BOOKLET_COVER_IMAGE}
-            alt="Printed A5 saddle-stitched booklet on a linen tablecloth with olive sprigs"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+        <div className="order-1 lg:order-2 relative rounded-xl overflow-hidden border border-border bg-gradient-to-br from-primary/10 via-card to-primary/20 min-h-[280px] lg:min-h-[420px] flex items-center justify-center">
+          <div className="text-center px-8">
+            <div className="text-[10px] uppercase tracking-[0.22em] text-primary font-medium">
+              Booklet 04
+            </div>
+            <div className="mt-4 font-display text-3xl lg:text-4xl tracking-tight leading-tight text-foreground/80">
+              Shabbos &amp; Yom&nbsp;Tov
+              <br />
+              Preparation Guide
+            </div>
+            <div className="mt-6 inline-flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="w-8 h-px bg-primary/40" />
+              Ezra Umarpeh
+              <span className="w-8 h-px bg-primary/40" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -341,12 +350,20 @@ function LooseLeafCard({ item }: { item: PackItem }) {
 function EditorialApproach() {
   return (
     <section className="mt-16 lg:mt-24 grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 lg:gap-12 items-stretch">
-      <div className="relative rounded-xl overflow-hidden border border-border bg-card min-h-[280px]">
-        <img
-          src={CARE_IMAGE}
-          alt="Hands passing a small kraft paper bag sealed with a heart sticker across a reception counter"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+      <div className="relative rounded-xl overflow-hidden border border-border bg-gradient-to-tr from-primary/15 via-card to-primary/10 min-h-[280px] flex items-center justify-center">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 120 120"
+          className="w-32 h-32 text-primary/60"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M60 95s-30-18-30-42a18 18 0 0 1 30-13 18 18 0 0 1 30 13c0 24-30 42-30 42z" />
+          <circle cx="60" cy="48" r="4" fill="currentColor" />
+        </svg>
       </div>
       <div className="flex flex-col justify-center">
         <span className="text-[10px] uppercase tracking-[0.22em] text-primary font-medium">
